@@ -1,518 +1,138 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Punya Sagara</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg:        #090e1a;
-      --surface:   #0d1526;
-      --blue:      #2563eb;
-      --blue-lite: #3b82f6;
-      --blue-glow: #60a5fa;
-      --cyan:      #06b6d4;
-      --text:      #e2e8f0;
-      --muted:     #94a3b8;
-      --border:    rgba(37,99,235,.25);
-    }
-
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      overflow-x: hidden;
-      scroll-behavior:smooth;
-    }
-
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
-      background-size: 200px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .bg-blob {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(90px);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .bg-blob-1 {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(37,99,235,.18) 0%, transparent 70%);
-      top: -150px; right: -100px;
-      animation: pulse-blob 8s ease-in-out infinite alternate;
-    }
-    .bg-blob-2 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(6,182,212,.12) 0%, transparent 70%);
-      bottom: 0; left: -80px;
-      animation: pulse-blob 10s ease-in-out infinite alternate-reverse;
-    }
-    @keyframes pulse-blob {
-      from { transform: scale(1) translate(0,0); }
-      to   { transform: scale(1.15) translate(20px,-20px); }
-    }
-
-    nav {
-      position: relative; z-index: 10;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.4rem 6vw;
-      border-bottom: 1px solid var(--border);
-      background: rgba(9,14,26,.75);
-      backdrop-filter: blur(18px);
-    }
-
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800; font-size: 1.2rem;
-      color: var(--blue-lite);
-      letter-spacing: -.02em;
-      text-decoration: none;
-    }
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .nav-links {
-      display: flex; align-items: center; gap: 2.2rem;
-      list-style: none;
-    }
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: .9rem; font-weight: 500;
-      letter-spacing: .02em;
-      position: relative;
-      transition: color .25s;
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute; left: 0; bottom: -4px;
-      width: 0; height: 2px;
-      background: var(--blue-lite);
-      border-radius: 99px;
-      transition: width .3s cubic-bezier(.4,0,.2,1);
-    }
-    .nav-links a:hover, .nav-links a.active { color: var(--text); }
-    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-
-    .nav-lang {
-      display: flex; align-items: center; gap: .4rem;
-      color: var(--muted); font-size: .85rem;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      padding: .3rem .75rem;
-      border-radius: 99px;
-      transition: border-color .25s, color .25s;
-    }
-    .nav-lang:hover { border-color: var(--blue-lite); color: var(--text); }
-
-    /* HERO */
-    .hero {
-      position: relative; z-index: 1;
-      min-height: calc(100vh - 72px);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 5rem 6vw 3rem;
-      gap: 3rem;
-      overflow: hidden;
-    }
-    .hero-left { display: flex; flex-direction: column; gap: 1.6rem; }
-
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: .6rem;
-      font-size: .8rem; font-weight: 500;
-      color: var(--blue-glow);
-      letter-spacing: .12em; text-transform: uppercase;
-      background: rgba(37,99,235,.12);
-      border: 1px solid rgba(37,99,235,.3);
-      padding: .35rem 1rem;
-      border-radius: 99px;
-      width: fit-content;
-      animation: fade-up .6s ease both;
-    }
-    .hero-eyebrow span.dot {
-      width: 6px; height: 6px;
-      background: var(--cyan);
-      border-radius: 50%;
-      box-shadow: 0 0 6px var(--cyan);
-      animation: blink 1.5s ease-in-out infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-    .hero-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      line-height: 1.08;
-      letter-spacing: -.03em;
-      animation: fade-up .7s .1s ease both;
-    }
-    .hero-title .sub  { font-size: clamp(1rem,2.5vw,1.3rem); color: var(--muted); font-weight: 700; display: block; margin-bottom: .2rem; }
-    .hero-title .main { font-size: clamp(2.2rem,5vw,3.8rem); color: var(--blue-lite); display: block; }
-
-    .hero-desc {
-      color: var(--muted);
-      font-size: clamp(.88rem,1.5vw,1rem);
-      line-height: 1.8;
-      max-width: 520px;
-      animation: fade-up .7s .2s ease both;
-    }
-
-    .hero-actions {
-      display: flex; gap: 1rem; flex-wrap: wrap;
-      animation: fade-up .7s .3s ease both;
-    }
-
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: .8rem 2.2rem;
-      border-radius: 50px;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 600; font-size: .95rem;
-      cursor: pointer;
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-      transition: transform .25s cubic-bezier(.34,1.56,.64,1),
-                  box-shadow .3s ease,
-                  color .25s;
-      letter-spacing: .01em;
-    }
-    .btn::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: white;
-      opacity: 0;
-      transform: scale(0);
-      border-radius: inherit;
-      transition: transform .4s cubic-bezier(.4,0,.2,1), opacity .4s;
-    }
-    .btn:hover::before { transform: scale(2); opacity: .06; }
-    .btn:hover { transform: translateY(-3px) scale(1.02); }
-    .btn:active { transform: translateY(0) scale(.98); }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--blue), #1d4ed8);
-      color: #fff;
-      border: none;
-      box-shadow: 0 4px 20px rgba(37,99,235,.4);
-    }
-    .btn-primary:hover {
-      box-shadow: 0 8px 32px rgba(37,99,235,.65),
-                  0 0 0 1px rgba(96,165,250,.3);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--blue-lite);
-      border: 1.5px solid rgba(37,99,235,.5);
-      transition: transform .25s cubic-bezier(.34,1.56,.64,1),
-                  box-shadow .3s, color .25s, border-color .3s,
-                  background .3s;
-    }
-    .btn-outline:hover {
-      background: rgba(37,99,235,.1);
-      border-color: var(--blue-lite);
-      color: #fff;
-      box-shadow: 0 0 20px rgba(37,99,235,.25);
-    }
-
-    .hero-right {
-      display: flex; align-items: flex-end; justify-content: center;
-      position: relative;
-      animation: fade-up .8s .2s ease both;
-    }
-
-    .hero-right::before {
-      content: '';
-      position: absolute;
-      width: 380px; height: 380px;
-      border-radius: 50%;
-      border: 1px solid rgba(37,99,235,.2);
-      background: radial-gradient(circle at 60% 40%, rgba(37,99,235,.12) 0%, transparent 70%);
-      animation: spin-slow 20s linear infinite;
-      z-index: 0;
-    }
-    .hero-right::after {
-      content: '';
-      position: absolute;
-      width: 300px; height: 300px;
-      border-radius: 50%;
-      border: 1px dashed rgba(6,182,212,.2);
-      animation: spin-slow 15s linear infinite reverse;
-      z-index: 0;
-    }
-    @keyframes spin-slow { to { transform: rotate(360deg); } }
-
-    .orbit-dot {
-      position: absolute;
-      width: 10px; height: 10px;
-      background: var(--cyan);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan);
-      z-index: 2;
-    }
-    .orbit-dot-1 { top: 18%; right: 15%; animation: float-dot1 4s ease-in-out infinite; }
-    .orbit-dot-2 { bottom: 22%; left: 12%; width:7px;height:7px; background: var(--blue-lite); box-shadow: 0 0 8px var(--blue-lite); animation: float-dot2 5s ease-in-out infinite; }
-    @keyframes float-dot1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(8px,-12px)} }
-    @keyframes float-dot2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-8px,10px)} }
-
-    .hero-img-wrap {
-      position: relative; z-index: 1;
-      animation: float-infinite 3.6s ease-in-out infinite;
-    }
-    @keyframes float-infinite {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-22px); }
-    }
-
-    .hero-img-wrap img {
-      width: clamp(240px, 36vw, 460px);
-      object-fit: contain;
-      object-position: bottom;
-      display: block;
-      filter: drop-shadow(0 20px 60px rgba(37,99,235,.45))
-              drop-shadow(0 0 2px rgba(96,165,250,.3));
-    }
-
-    .hero-img-placeholder {
-      font-size: 2rem;
-      font-family: 'Syne', sans-serif;
-      letter-spacing: .15em;
-      text-align: center;
-      color: rgba(96,165,250,.5);
-    }
-
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── PROJECTS SECTION ── */
-    .projects-section {
-      position: relative;
-      z-index: 2;
-      padding: 4rem 6vw 6rem;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-    .section-title span {
-      color: var(--blue-glow);
-      font-size: .75rem;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-    }
-    .section-title h2 {
-      margin-top: .6rem;
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(1.6rem,3.5vw,2.6rem);
-      color: var(--text);
-    }
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.2rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .project-card {
-      background: rgba(13,21,38,.8);
-      border: 1px solid rgba(37,99,235,.18);
-      border-radius: 16px;
-      overflow: hidden;
-      transition:
-        transform .35s ease,
-        border-color .35s ease,
-        box-shadow .35s ease;
-      backdrop-filter: blur(12px);
-    }
-
-    .project-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(96,165,250,.45);
-      box-shadow:
-        0 10px 32px rgba(37,99,235,.18),
-        0 0 16px rgba(96,165,250,.08);
-    }
-
-    .project-image {
-      height:180px;
-        overflow:hidden;
-       border-bottom:1px solid rgba(37,99,235,.15);
-         background:#050816;
-    }
-    .project-image img{
-  width:100%;
-  height: 100%;
-  object-fit:contain;
-  display:block;
-
-  transition:
-    transform .4s ease,
-    filter .4s ease;
-}
-
-    .project-content {
-      padding: 1rem 1rem .9rem;
-    }
-
-    .project-content h3 {
-      font-family: 'Syne', sans-serif;
-      margin-bottom: .4rem;
-      color: var(--text);
-      font-size: .9rem;
-      letter-spacing: .04em;
-    }
-
-    .project-content p {
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: .8rem;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    @media (max-width: 768px) {
-      .hero {
-        grid-template-columns: 1fr;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        }
+       body{
+        background: #090e1a;
+        height: 100vh;
+        font-family: 'DM Sans', sans-serif;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+       } 
+       body::before{
+        content: "";
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(37,99,235,.25), transparent 70%);
+        filter: blur(50px);
+        animation: float 6s ease-in-out infinite;
+       }
+       .border {
+        position: relative;
+        background: #151d2e;
+        backdrop-filter: blur(10px);
+        border-color: #152546;
+        border: 1px solid rgba(59,130,246,.2);
+        width: 350px;
+        max-width: 400px;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 0 25px rgba(37,99,235,.15),
+        inset 0 0 10px rgba(255,255,255,.03);
+        color: #e2e8f0;
+       }
+       @keyframes float{
+        0%{
+            transform:translateY(0px);
+        }
+        50%{
+            transform: translateY(-20px);
+        }
+        100%{
+            transform: translateY(0px);
+        }
+       }
+       .border h2 {
         text-align: center;
-        padding-top: 3rem;
-      }
-      .hero-right { order: -1; }
-      .hero-eyebrow { margin: 0 auto; }
-      .hero-actions { justify-content: center; }
-      .hero-desc { margin: 0 auto; }
-      nav { flex-wrap: wrap; gap: .8rem; }
-      .nav-links { gap: 1.2rem; }
+        color: #3b82f6;
+        margin-bottom:30px;
+        font-size: 35px;
+       }
+       .input-login {
+        margin-bottom: 20px;
+       }
+       .input-login label{
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #94a3b8;
+       }
+       .input-login input {
+        width: 100%;
+        border: none;
+        outline: none;
+        padding: 14px;
+        border: 1px solid #292354;
+        border-radius: 10px;
+        background: #0f172a;
+        color:white;
+        transition: .3s;
+       }
+       .input-login input:focus{
+        border-color: #3b82f6;
+        box-shadow: 0 0 10px rgba(59,130,246,.4);
+       }
+       button {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        transition: .3s;
+        cursor: pointer;
+       }
+       button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 20px rgba(59,130,246,.5);
+       }
 
-      .projects-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .projects-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: .8rem;
-      }
-      .project-image { height: 100px; }
-      .project-content { padding: .8rem .8rem .75rem; }
-      .project-content h3 { font-size: .82rem; }
-      .project-content p { font-size: .74rem; }
-    }
-  </style>
+    </style>
 </head>
 <body>
-
-  <div class="bg-blob bg-blob-1"></div>
-  <div class="bg-blob bg-blob-2"></div>
-
-  <nav>
-    <a href="#" class="nav-logo">PROJECT CREATOR</a>
-    <div class="nav-right">
-      <ul class="nav-links">
-        <li><a href="#" class="active">Home</a></li>
-        <li><a href="#">Projects</a></li>
-        <li><a href="#">Carier</a></li>
-        <li><a href="#">Other</a></li>
-      </ul>
-      <div class="nav-lang">🌐 EN</div>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <div class="hero-left">
-      <div class="hero-eyebrow">
-        <span class="dot"></span>
-        JUST WEBSITE
-      </div>
-
-      <h1 class="hero-title">
-        <span class="sub">The Last Calm Place On Internet</span>
-        <span class="main">ANTIWEB</span>
-      </h1>
-
-      <p class="hero-desc">
-        The internet was a mistake. We improved it anyway. Somewhere between infinite scrolling and algorithmic chaos, the web forgot how to feel human. AntiWeb is our attempt to rebuild that experience with cleaner design, calmer interaction, and significantly less digital nonsense.
-      </p>
-
-      <div class="hero-actions">
-        <a href="#" class="btn btn-primary">Enter</a>
-        <a href="#archive" class="btn btn-outline">Archive</a>
-      </div>
-    </div>
-
-    <div class="hero-right">
-      <div class="orbit-dot orbit-dot-1"></div>
-      <div class="orbit-dot orbit-dot-2"></div>
-      <div class="hero-img-wrap">
-        <div class="hero-img-placeholder">SYSTEM<br>ONLINE</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="archive" class="projects-section">
-    <div class="section-title">
-      <span>ARCHIVED PROJECTS</span>
-      <h2>Selected Digital Experiments</h2>
-    </div>
-
-    <div class="projects-grid">
-
-      <div class="project-card">
-        <div class="project-image"><img src="ChatGPT Image May 18, 2026, 01_52_50 PM.png"></div>
-        <div class="project-content">
-          <h3>ANTIWEB UI</h3>
-          <p>Experimental interface built for calmer digital interaction.</p>
+    <div class="border">
+    <form>
+        <h2>Login</h2>
+        <div class="input-login">
+            <label>Username :</label>
+            <input type="text" name="Username" placeholder="Username..." required>
         </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-image"><img src="ChatGPT Image May 18, 2026, 01_58_55 PM.png"></div>
-        <div class="project-content">
-          <h3>VOID TERMINAL</h3>
-          <p>Concept terminal system designed for fictional cyber networks.</p>
+        <div class="input-login">
+            <label>Password :</label>
+            <input type="password" name="pass" placeholder="Password..." required>
         </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-image"><img src="ChatGPT Image May 18, 2026, 02_01_00 PM.png"></div>
-        <div class="project-content">
-          <h3>ERROR SYSTEM</h3>
-          <p>Interactive glitch experiment exploring digital decay aesthetics.</p>
+        <div class="btn-submit">
+        <button type="submit">Submit</button>
         </div>
-      </div>
+    </form>
+    <script>
+        
+const form = document.querySelector("form");
 
-      <div class="project-card">
-        <div class="project-image"><img src="ChatGPT Image May 18, 2026, 02_03_37 PM.png"></div>
-        <div class="project-content">
-          <h3>HUMAN LOGS</h3>
-          <p>Archive prototype documenting absurd online human behavior.</p>
-        </div>
-      </div>
+form.addEventListener("submit", function(e){
+    e.preventDefault();
 
-    </div>
-  </section>
+    const username = document.querySelector('input[name="Username"]').value;
+    const password = document.querySelector('input[name="pass"]').value;
 
+    if(username === "admin" && password === "123"){
+        window.location.href = "https://sagara-cybersec.github.io/ANTIWEB/";
+    } else {
+        alert("Username atau password salah!");
+    }
+});
+    </script>
 </body>
 </html>
